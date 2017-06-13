@@ -14,6 +14,7 @@ func main() {
 
 	createAppDir(newAppName)
 	addAppToGitIgnore(newAppName)
+	commitToMasterRepo(newAppName)
 	//fmt.Println("Add container to docker-compose.apps.yml")
 	goToAppDir(newAppName)
 	createReadme(newAppName)
@@ -41,6 +42,20 @@ func addAppToGitIgnore(newAppName string) {
 		fmt.Println(err)
 	}
 	f.Close()
+}
+
+func commitToMasterRepo(newAppName string) {
+	cmd := exec.Command("git", "add", ".gitignore")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	cmd = exec.Command("git", "commit", "-am", "\"Add " + newAppName + " app\"")
+	err = cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func goToAppDir(newAppName string) {
