@@ -6,6 +6,13 @@ import (
 	"os/exec"
 )
 
+// TODO: implement the following features
+// fres init [project name]
+// fres create [app name] --lang ruby
+// fres remove [app name]
+// fres deploy [app name]
+// fres deploy
+
 func main() {
 	// TODO: check if git binary present
 	// TODO: load args from CLI
@@ -20,6 +27,7 @@ func main() {
 	createReadme(newAppName)
 	createDockerfile(newAppName)
 	initializeGitRepo(newAppName)
+	// TODO: create remote repo and push
 }
 
 func createAppDir(newAppName string) {
@@ -45,6 +53,7 @@ func addAppToGitIgnore(newAppName string) {
 }
 
 func commitToMasterRepo(newAppName string) {
+	// TODO: use git lib for dealing with repos
 	cmd := exec.Command("git", "add", ".gitignore")
 	err := cmd.Run()
 	if err != nil {
