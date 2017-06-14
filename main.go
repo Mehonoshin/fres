@@ -16,6 +16,7 @@ func main() {
 	// TODO: check if git binary present
 	// TODO: load args from CLI
 	// TODO: read config
+	// TODO: display https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication app passwords text if no pass provided
 	newAppName := "migrations"
 
 	structure.CreateAppDir(newAppName)
@@ -25,6 +26,7 @@ func main() {
 	structure.GoToAppDir(newAppName)
 	structure.CreateReadme(newAppName)
 	structure.CreateDockerfile(newAppName)
+	structure.CreateBuildScript(newAppName)
 	structure.InitializeGitRepo(newAppName)
 	// TODO: create remote repo and push
 }

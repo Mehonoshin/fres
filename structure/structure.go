@@ -30,17 +30,10 @@ func AddAppToGitIgnore(newAppName string) {
 
 func CommitToMasterRepo(newAppName string) {
 	// TODO: use git lib for dealing with repos
-	cmd := exec.Command("git", "add", ".gitignore")
-	err := cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	cmd = exec.Command("git", "commit", "-am", "\"Add " + newAppName + " app\"")
-	err = cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
+	runShellCmd("git", "add", ".gitignore")
+	runShellCmd("git", "commit", "-am", "\"Add " + newAppName + " app\"")
+	//git remote add origin ssh://git@bitbucket.org/mexx/test1.git
+	//git push -u origin master
 }
 
 func GoToAppDir(newAppName string) {
@@ -51,46 +44,36 @@ func GoToAppDir(newAppName string) {
 }
 
 func CreateReadme(newAppName string) {
-	readmeFile, err := os.Create("README.md")
-	if err != nil {
-		fmt.Println(err)
-	}
-	readmeFile.Close()
+	createFile("README.md")
 }
 
 func InitializeGitRepo(newAppName string) {
-	cmd := exec.Command("git", "init")
+	runShellCmd("git", "init")
+	runShellCmd("git", "add", ".")
+	runShellCmd("git", "commit", "-am", "\"Initial commit\"")
+}
+
+func CreateDockerfile(newAppName string) {
+	createFile("Dockerfile")
+}
+
+func CreateBuildScript(newAppName string) {
+	createFile("build.sh")
+}
+
+func runShellCmd(name string, args ...string) {
+	cmd := exec.Command(name, args...)
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	cmd = exec.Command("git", "add", ".")
-	err = cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	cmd = exec.Command("git", "commit", "-am", "\"Initial commit\"")
-	err = cmd.Run()
-	if err != nil {
-		fmt.Println(err)
-	}
 }
 
-func CreateDockerfile(newAppName string) {
-	dockerfile, err := os.Create("Dockerfile")
+func createFile(name string) {
+	file, err := os.Create(name)
 	if err != nil {
 		fmt.Println(err)
 	}
-	dockerfile.Close()
-}
-
-func CreateBuildScript(newAppName string) {
-	buildScript, err := os.Create("build.sh")
-	if err != nil {
-		fmt.Println(err)
-	}
-	buildScript.Chmod(0755)
-	buildScript.Close()
+	file.Chmod(0755)
+	file.Close()
 }

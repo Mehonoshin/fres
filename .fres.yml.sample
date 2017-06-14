@@ -1,0 +1,7 @@
+fres:
+	project_name: my_project
+	scm: bitbucket
+	bitbucket:
+		user: username
+		app_password: password
+
