@@ -6,6 +6,7 @@ import (
 
 	"github.com/Mehonoshin/fres/shell"
 	"github.com/Mehonoshin/fres/bitbucket"
+	"github.com/Mehonoshin/fres/config"
 )
 
 func AddToGitIgnore(filename string) {
@@ -29,7 +30,7 @@ func CommitFile(filename, commitMessage string) {
 }
 
 func CreateRemote(appName string) {
-	//TODO: use login and pass from config
+	bitbucket.CreateRemoteRepo(appName, config.Conf.Bitbucket.User, config.Conf.Bitbucket.AppPassword)
 }
 
 func AddRemoteAsOrigin(remoteName string) {

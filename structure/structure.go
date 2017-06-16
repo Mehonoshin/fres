@@ -3,7 +3,6 @@ package structure
 import (
 	"fmt"
 	"os"
-	"os/exec"
 
 	"github.com/Mehonoshin/fres/git"
 	"github.com/Mehonoshin/fres/shell"
