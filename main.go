@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Mehonoshin/fres/structure"
+	"github.com/Mehonoshin/fres/utils"
 	"github.com/Mehonoshin/fres/config"
 
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -30,17 +31,23 @@ func main() {
 
 	switch *cmd {
 		case "init":
-			fmt.Println("init")
+			utils.Message("init")
 		case "create":
-			fmt.Println("create")
+			utils.Message("create")
 			create(*name)
 		case "remove":
-			fmt.Println("remove")
+			utils.Message("remove")
 		case "deploy":
-			fmt.Println("deploy")
+			utils.Message("deploy")
 		default:
-			fmt.Println("Unknown command")
+			utils.Error("Unknown command")
 	}
+}
+
+func initProject(initPath string) {
+	//init.CreateProjectDir(initPath)
+	//init.AddConfigToGitIgnore()
+	//init.CreateConfig()
 }
 
 func create(newAppName string) {
