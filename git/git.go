@@ -9,10 +9,10 @@ import (
 	"github.com/Mehonoshin/fres/config"
 )
 
-func AddToGitIgnore(filename string) {
+func AddToGitIgnore(gitignorePath, filename string) {
 	//TODO: check if this line exists in file
 	wd, _ := os.Getwd()
-	f, err := os.OpenFile(wd + "/.gitignore", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	f, err := os.OpenFile(wd + "/" + gitignorePath + "/.gitignore", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		fmt.Println(err)
 	}

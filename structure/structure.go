@@ -16,16 +16,17 @@ func CreateProjectDir(dirPath string) {
 	utils.CreateDir(dirPath)
 }
 
-func CreateConfig(dirPath string) {
+func CreateConfig(dirPath string) (string, error) {
 	// parse string and return only last token
 	filePath := dirPath + "/.fres.yml"
 	utils.CreateFile(filePath)
-	utils.WriteToFile(filePath, sampleConfig())
+	err := utils.WriteToFile(filePath, sampleConfig())
+	return filePath, err
 }
 
-func AddAppToGitIgnore(newAppName string) {
+func AddToGitIgnore(gitignorePath, pathToAdd string) {
 	// return error
-	git.AddToGitIgnore(newAppName)
+	git.AddToGitIgnore(gitignorePath, pathToAdd)
 }
 
 func CommitToMasterRepo(newAppName string) {

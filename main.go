@@ -13,20 +13,18 @@ import (
 var (
 	verbose    = kingpin.Flag("verbose", "Verbose mode.").Short('v').Bool()
 	configPath = kingpin.Flag("config", "Path to config").Default(".fres.yml").String()
+	lang       = kingpin.Flag("lang", "Service language").Short('l').Default("ruby").String()
 
 	cmd				 = kingpin.Arg("cmd", "Command to perform.").Required().String()
 	name			 = kingpin.Arg("name", "Name").Default(".").String()
 )
 
-// TODO: implement the following features
-// fres init [project name]
-// fres create [app name] --lang ruby
-// fres remove [app name]
-// fres deploy [app name]
-// fres deploy
-
 func main() {
 	kingpin.Parse()
+
+	if (*cmd != "init") {
+		loadConfig()
+	}
 
 	switch *cmd {
 		case "init":
@@ -34,14 +32,11 @@ func main() {
 			initProject(*name)
 		case "create":
 			utils.Message("create")
-			loadConfig()
 			create(*name)
 		case "remove":
 			utils.Message("remove")
-			loadConfig()
 		case "deploy":
 			utils.Message("deploy")
-			loadConfig()
 		default:
 			utils.Error("Unknown command")
 	}
@@ -53,9 +48,14 @@ func loadConfig() {
 
 func initProject(initPath string) {
 	structure.CreateProjectDir(initPath)
-	structure.CreateConfig(initPath)
-	//structure.AddConfigToGitIgnore()
-	//structure.CreateConfig(initPath)
+
+	_, err := structure.CreateConfig(initPath)
+	if err != nil {
+		utils.Warn(err)
+	}
+
+	utils.CreateFile(initPath + "/.gitignore")
+	structure.AddToGitIgnore(initPath, ".fres.yml")
 }
 
 func create(newAppName string) {
@@ -67,7 +67,7 @@ func create(newAppName string) {
 	// Master dir
 	fmt.Println(config.Conf)
 	structure.CreateAppDir(newAppName)
-	structure.AddAppToGitIgnore(newAppName)
+	structure.AddToGitIgnore(".", newAppName)
 	structure.CommitToMasterRepo(newAppName)
 	fmt.Println("Add container to docker-compose.apps.yml")
 
