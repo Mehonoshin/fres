@@ -1,22 +1,30 @@
 package structure
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/Mehonoshin/fres/git"
 	"github.com/Mehonoshin/fres/shell"
+	"github.com/Mehonoshin/fres/utils"
 )
 
 func CreateAppDir(newAppName string) {
-	err := os.Mkdir(newAppName, 0755)
-	if err != nil {
-		// Check if directory exists
-		fmt.Println("Can't create dir")
-	}
+	// return error
+	utils.CreateDir(newAppName)
+}
+
+func CreateProjectDir(dirPath string) {
+	// return error
+	utils.CreateDir(dirPath)
+}
+
+func CreateConfig(dirPath string) {
+	// parse string and return only last token
+	filePath := dirPath + "/.fres.yml"
+	utils.CreateFile(filePath)
+	utils.WriteToFile(filePath, sampleConfig())
 }
 
 func AddAppToGitIgnore(newAppName string) {
+	// return error
 	git.AddToGitIgnore(newAppName)
 }
 
@@ -34,33 +42,25 @@ func SetupGit(newAppName string) {
 	git.PushMaster()
 }
 
-func GoToAppDir(newAppName string) {
-	err := os.Chdir(newAppName)
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
 func CreateReadme(newAppName string) {
 	// TODO: add default content
-	createFile("README.md")
+	utils.CreateFile("README.md")
 }
 
 func CreateDockerfile(newAppName string) {
 	// TODO: add default content
-	createFile("Dockerfile")
+	utils.CreateFile("Dockerfile")
 }
 
 func CreateBuildScript(newAppName string) {
 	// TODO: add default content
-	createFile("build.sh")
+	utils.CreateFile("build.sh")
 }
 
-func createFile(name string) {
-	file, err := os.Create(name)
-	if err != nil {
-		fmt.Println(err)
-	}
-	file.Chmod(0755)
-	file.Close()
+func sampleConfig() string {
+	return "project_name: myproject\n" +
+	"scm: bitbucket\n" +
+	"bitbucket:\n" +
+	"  user: sample_user\n" +
+	"  password: sample_pass\n"
 }

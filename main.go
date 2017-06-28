@@ -27,27 +27,35 @@ var (
 
 func main() {
 	kingpin.Parse()
-	config.Load(*configPath)
 
 	switch *cmd {
 		case "init":
 			utils.Message("init")
+			initProject(*name)
 		case "create":
 			utils.Message("create")
+			loadConfig()
 			create(*name)
 		case "remove":
 			utils.Message("remove")
+			loadConfig()
 		case "deploy":
 			utils.Message("deploy")
+			loadConfig()
 		default:
 			utils.Error("Unknown command")
 	}
 }
 
+func loadConfig() {
+	config.Load(*configPath)
+}
+
 func initProject(initPath string) {
-	//init.CreateProjectDir(initPath)
-	//init.AddConfigToGitIgnore()
-	//init.CreateConfig()
+	structure.CreateProjectDir(initPath)
+	structure.CreateConfig(initPath)
+	//structure.AddConfigToGitIgnore()
+	//structure.CreateConfig(initPath)
 }
 
 func create(newAppName string) {
@@ -64,7 +72,7 @@ func create(newAppName string) {
 	fmt.Println("Add container to docker-compose.apps.yml")
 
 	// New Project dir
-	structure.GoToAppDir(newAppName)
+	utils.GoToDir(newAppName)
 	structure.CreateReadme(newAppName)
 	structure.CreateDockerfile(newAppName)
 	structure.CreateBuildScript(newAppName)
