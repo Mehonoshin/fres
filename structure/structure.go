@@ -2,7 +2,6 @@ package structure
 
 import (
 	"github.com/Mehonoshin/fres/git"
-	"github.com/Mehonoshin/fres/shell"
 	"github.com/Mehonoshin/fres/utils"
 )
 
@@ -34,13 +33,15 @@ func CommitToMasterRepo(newAppName string) {
 }
 
 func SetupGit(newAppName string) {
-	shell.RunShellCmd("git", "init")
-	shell.RunShellCmd("git", "add", ".")
-	shell.RunShellCmd("git", "commit", "-am", "\"Initial commit\"")
-
+	git.CreateLocalGitRepo()
 	git.CreateRemote(newAppName)
 	git.AddRemoteAsOrigin(newAppName)
 	git.PushMaster()
+}
+
+func CreateGitRepo(path string) {
+	utils.GoToDir(path)
+	git.CreateLocalGitRepo()
 }
 
 func CreateReadme(newAppName string) {

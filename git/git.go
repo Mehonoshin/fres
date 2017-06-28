@@ -9,6 +9,13 @@ import (
 	"github.com/Mehonoshin/fres/config"
 )
 
+
+func CreateLocalGitRepo() {
+	shell.RunShellCmd("git", "init")
+	shell.RunShellCmd("git", "add", ".")
+	shell.RunShellCmd("git", "commit", "-am", "\"Initial commit\"")
+}
+
 func AddToGitIgnore(gitignorePath, filename string) {
 	//TODO: check if this line exists in file
 	wd, _ := os.Getwd()

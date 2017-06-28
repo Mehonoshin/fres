@@ -56,6 +56,7 @@ func initProject(initPath string) {
 
 	utils.CreateFile(initPath + "/.gitignore")
 	structure.AddToGitIgnore(initPath, ".fres.yml")
+	structure.CreateGitRepo(initPath)
 }
 
 func create(newAppName string) {
