@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/Mehonoshin/fres/structure"
 	"github.com/Mehonoshin/fres/utils"
 	"github.com/Mehonoshin/fres/config"
@@ -21,6 +19,9 @@ var (
 
 func main() {
 	kingpin.Parse()
+
+	// TODO: check if git binary present
+	// TODO: display https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication app passwords text if no pass provided
 
 	if (*cmd != "init") {
 		loadConfig()
@@ -60,17 +61,11 @@ func initProject(initPath string) {
 }
 
 func create(newAppName string) {
-	// TODO: check if git binary present
-	// TODO: load args from CLI
-	// TODO: read config
-	// TODO: display https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication app passwords text if no pass provided
-
 	// Master dir
-	fmt.Println(config.Conf)
 	structure.CreateAppDir(newAppName)
 	structure.AddToGitIgnore(".", newAppName)
 	structure.CommitToMasterRepo(newAppName)
-	fmt.Println("Add container to docker-compose.apps.yml")
+	utils.Message("Add container to docker-compose.apps.yml")
 
 	// New Project dir
 	utils.GoToDir(newAppName)
@@ -78,4 +73,5 @@ func create(newAppName string) {
 	structure.CreateDockerfile(newAppName)
 	structure.CreateBuildScript(newAppName)
 	structure.SetupGit(newAppName)
+	utils.Success(newAppName + " successfully created")
 }

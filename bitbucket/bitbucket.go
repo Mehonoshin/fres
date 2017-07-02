@@ -1,12 +1,16 @@
 package bitbucket
 
 import (
-	"github.com/Mehonoshin/fres/shell"
+	"github.com/Mehonoshin/fres/utils"
 )
 
-func CreateRemoteRepo(repoName, username, appPassword string) {
+func CreateRemoteRepo(repoName, username, appPassword string) error {
 	// TODO: remove error if repo not created
 	// TODO: check if repo exists
-	cmd := "curl --user " + username + ":" + appPassword + " -X POST -H \"Content-Type: application/json\" -d '{\"scm\": \"git\"}' https://api.bitbucket.org/2.0/repositories/" + username + "/" + repoName
-	shell.RunShellCmd(cmd)
+	endpoint := "https://api.bitbucket.org/2.0/repositories/" + username + "/" + repoName
+	payload := "{\"scm\": \"git\"}"
+
+	err := utils.HttpPostJson(endpoint, username, appPassword, payload)
+
+	return err
 }

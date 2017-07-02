@@ -7,6 +7,7 @@ import (
 	"github.com/Mehonoshin/fres/shell"
 	"github.com/Mehonoshin/fres/bitbucket"
 	"github.com/Mehonoshin/fres/config"
+	"github.com/Mehonoshin/fres/utils"
 )
 
 
@@ -37,7 +38,12 @@ func CommitFile(filename, commitMessage string) {
 }
 
 func CreateRemote(appName string) {
-	bitbucket.CreateRemoteRepo(appName, config.Conf.Bitbucket.User, config.Conf.Bitbucket.AppPassword)
+	appName = config.Conf.ProjectName + "-" + appName
+
+	err := bitbucket.CreateRemoteRepo(appName, config.Conf.Bitbucket.User, config.Conf.Bitbucket.AppPassword)
+	if err != nil {
+		utils.Error("Can't create '"+ appName + "' remote: ", err)
+	}
 }
 
 func AddRemoteAsOrigin(remoteName string) {
