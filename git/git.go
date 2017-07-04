@@ -12,9 +12,9 @@ import (
 
 
 func CreateLocalGitRepo() {
-	shell.RunShellCmd("git", "init")
-	shell.RunShellCmd("git", "add", ".")
-	shell.RunShellCmd("git", "commit", "-am", "\"Initial commit\"")
+	shell.RunCmd("git", "init")
+	shell.RunCmd("git", "add", ".")
+	shell.RunCmd("git", "commit", "-am", "\"Initial commit\"")
 }
 
 func AddToGitIgnore(gitignorePath, filename string) {
@@ -33,8 +33,8 @@ func AddToGitIgnore(gitignorePath, filename string) {
 
 func CommitFile(filename, commitMessage string) {
 	// TODO: use git lib for dealing with repos
-	shell.RunShellCmd("git", "add", filename)
-	shell.RunShellCmd("git", "commit", "-m", commitMessage)
+	shell.RunCmd("git", "add", filename)
+	shell.RunCmd("git", "commit", "-m", commitMessage)
 }
 
 func CreateRemote(appName string) {
@@ -48,7 +48,7 @@ func CreateRemote(appName string) {
 
 func AddRemoteAsOrigin(remoteName string) {
 	// TODO: get butbucket username from config
-	//shell.RunShellCmd("git", "remote", "add", "origin", "ssh://git@bitbucket.org/mexx/" + remoteName + ".git")
+	//shell.RunCmd("git", "remote", "add", "origin", "ssh://git@bitbucket.org/mexx/" + remoteName + ".git")
 }
 
 func PushMaster() {
@@ -56,5 +56,5 @@ func PushMaster() {
 }
 
 func pushBranch(branchName string) {
-	shell.RunShellCmd("git", "push", "-u", "origin", branchName)
+	shell.RunCmd("git", "push", "-u", "origin", branchName)
 }

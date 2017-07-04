@@ -4,6 +4,7 @@ import (
 	"github.com/Mehonoshin/fres/structure"
 	"github.com/Mehonoshin/fres/utils"
 	"github.com/Mehonoshin/fres/config"
+	"github.com/Mehonoshin/fres/shell"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -35,7 +36,8 @@ func main() {
 		case "remove":
 			utils.Message("remove")
 		case "deploy":
-			utils.Message("deploy")
+			utils.Message("Deploy whole project")
+			deploy()
 		default:
 			utils.Error("Unknown command")
 	}
@@ -48,7 +50,9 @@ func loadConfig(command string) {
 		config.Conf = &config.Config{}
 	}
 
-	config.Conf.Cmd = *cmd
+	utils.Message("cmd")
+	utils.Message(command)
+	config.Conf.Cmd = command
 	config.Conf.Arg = *name
 }
 
@@ -79,4 +83,10 @@ func create(newAppName string) {
 	structure.CreateBuildScript(newAppName)
 	structure.SetupGit(newAppName)
 	utils.Success(newAppName + " successfully created")
+}
+
+func deploy() {
+	deployConf := config.Conf.Deploy
+	utils.GoToDir(deployConf.Root)
+	shell.RunCmd(deployConf.Cmd)
 }

@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func RunShellCmd(name string, args ...string) {
+func RunCmd(name string, args ...string) {
 	cmd := exec.Command(name, args...)
 	err := cmd.Run()
 	if err != nil {

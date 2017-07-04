@@ -10,9 +10,10 @@ import (
 )
 
 type Config struct {
+	RuntimeConfig
+
 	ProjectName string   `yaml:"project_name"`
 	Scm         string   `yaml:"scm"`
-	DeployCmd   string   `yaml:"deploy_cmd"`
 
 	Bitbucket   struct {
 		User        string `yaml:"user"`
@@ -25,7 +26,10 @@ type Config struct {
 		BaseImage string `yaml:"base_image"`
 	}
 
-	RuntimeConfig
+	Deploy struct {
+		Root string `yaml:"root"`
+		Cmd  string `yaml:"cmd"`
+	}
 }
 
 type RuntimeConfig struct {
@@ -48,8 +52,10 @@ func Load(path string) *Config {
 	err = yaml.Unmarshal(data, c)
 	if err != nil {
 		log.Printf("Can't parse config:", err)
-		Conf = &Config{}
+		c = &Config{}
 	}
+
+	Conf = c
 
 	return c
 }
