@@ -39,6 +39,8 @@ type RuntimeConfig struct {
 
 	Vcs         string
 	VcsProvider string
+
+	Lang string
 }
 
 var (

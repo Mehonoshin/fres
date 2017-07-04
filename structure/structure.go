@@ -50,11 +50,6 @@ func CreateReadme(newAppName string) {
 	utils.CreateFile("README.md")
 }
 
-func CreateDockerfile(newAppName string) {
-	// TODO: add default content
-	utils.CreateFile("Dockerfile")
-}
-
 func CreateBuildScript(newAppName string) {
 	// TODO: add default content
 	utils.CreateFile("build.sh")

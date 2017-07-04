@@ -42,6 +42,7 @@ func loadConfig(command string) {
 		Arg: *name,
 		Vcs: *vcs,
 		VcsProvider: *vcsProvider,
+		Lang: *lang,
 	}
 }
 
@@ -89,7 +90,7 @@ func create(newAppName string) {
 	// New Project dir
 	utils.GoToDir(newAppName)
 	structure.CreateReadme(newAppName)
-	structure.CreateDockerfile(newAppName)
+	CreateDockerfile(newAppName)
 	structure.CreateBuildScript(newAppName)
 	structure.SetupGit(newAppName)
 	utils.Success(newAppName + " successfully created")
