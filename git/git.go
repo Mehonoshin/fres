@@ -42,7 +42,7 @@ func CreateRemote(appName string) {
 
 	err := bitbucket.CreateRemoteRepo(appName, config.Conf.Bitbucket.User, config.Conf.Bitbucket.AppPassword)
 	if err != nil {
-		utils.Error("Can't create '"+ appName + "' remote: ", err)
+		utils.Error("Can't create '"+ appName + "' remote")
 	}
 }
 

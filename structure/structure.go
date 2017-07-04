@@ -3,6 +3,7 @@ package structure
 import (
 	"github.com/Mehonoshin/fres/git"
 	"github.com/Mehonoshin/fres/utils"
+	"github.com/Mehonoshin/fres/config"
 )
 
 func CreateAppDir(newAppName string) {
@@ -19,7 +20,7 @@ func CreateConfig(dirPath string) (string, error) {
 	// parse string and return only last token
 	filePath := dirPath + "/.fres.yml"
 	utils.CreateFile(filePath)
-	err := utils.WriteToFile(filePath, sampleConfig())
+	err := utils.WriteToFile(filePath, config.SampleConfig())
 	return filePath, err
 }
 
@@ -59,10 +60,5 @@ func CreateBuildScript(newAppName string) {
 	utils.CreateFile("build.sh")
 }
 
-func sampleConfig() string {
-	return "project_name: myproject\n" +
-	"scm: bitbucket\n" +
-	"bitbucket:\n" +
-	"  user: sample_user\n" +
-	"  password: sample_pass\n"
-}
+//func SampleDockerfile() string {
+//}

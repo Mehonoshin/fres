@@ -13,7 +13,7 @@ var (
 	configPath = kingpin.Flag("config", "Path to config").Default(".fres.yml").String()
 	lang       = kingpin.Flag("lang", "Service language").Short('l').Default("ruby").String()
 
-	cmd				 = kingpin.Arg("cmd", "Command to perform.").Required().String()
+	cmd				 = kingpin.Arg("cmd", "Command to perform(init, create, remove, deploy)").Required().String()
 	name			 = kingpin.Arg("name", "Name").Default(".").String()
 )
 
@@ -23,16 +23,14 @@ func main() {
 	// TODO: check if git binary present
 	// TODO: display https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication app passwords text if no pass provided
 
-	if (*cmd != "init") {
-		loadConfig()
-	}
+	loadConfig(*cmd)
 
 	switch *cmd {
 		case "init":
-			utils.Message("init")
+			utils.Message("Initialize new project '" + *name + "'")
 			initProject(*name)
 		case "create":
-			utils.Message("create")
+			utils.Message("Create new service '" + *name + "'")
 			create(*name)
 		case "remove":
 			utils.Message("remove")
@@ -43,8 +41,15 @@ func main() {
 	}
 }
 
-func loadConfig() {
-	config.Load(*configPath)
+func loadConfig(command string) {
+	if (command != "init") {
+		config.Load(*configPath)
+	} else {
+		config.Conf = &config.Config{}
+	}
+
+	config.Conf.Cmd = *cmd
+	config.Conf.Arg = *name
 }
 
 func initProject(initPath string) {

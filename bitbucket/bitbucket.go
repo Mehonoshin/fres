@@ -10,6 +10,7 @@ func CreateRemoteRepo(repoName, username, appPassword string) error {
 	endpoint := "https://api.bitbucket.org/2.0/repositories/" + username + "/" + repoName
 	payload := "{\"scm\": \"git\"}"
 
+	// TODO: check response and handle errors
 	err := utils.HttpPostJson(endpoint, username, appPassword, payload)
 
 	return err
