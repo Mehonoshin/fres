@@ -10,10 +10,11 @@ import (
 )
 
 type Config struct {
-	RuntimeConfig
+	Runtime *RuntimeConfig
 
 	ProjectName string   `yaml:"project_name"`
-	Scm         string   `yaml:"scm"`
+	Vcs         string   `yaml:"vcs"`
+	VcsProvider string   `yaml:"vcs_provider"`
 
 	Bitbucket   struct {
 		User        string `yaml:"user"`
@@ -35,24 +36,35 @@ type Config struct {
 type RuntimeConfig struct {
 	Cmd string
 	Arg string
+
+	Vcs         string
+	VcsProvider string
 }
 
 var (
 	Conf *Config
 )
 
-func Load(path string) *Config {
+func NewConfig() *Config {
 	c := &Config{}
+	c.Runtime = &RuntimeConfig{}
+	return c
+}
+
+func Load(path string) *Config {
+	c := NewConfig()
 
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
+		// TODO: replace with utils.Error
 		log.Printf("Can't read config:", err)
 	}
 
 	err = yaml.Unmarshal(data, c)
 	if err != nil {
+		// TODO: replace with utils.Error
 		log.Printf("Can't parse config:", err)
-		c = &Config{}
+		c = NewConfig()
 	}
 
 	Conf = c
@@ -61,8 +73,10 @@ func Load(path string) *Config {
 }
 
 func SampleConfig() string {
-	return "project_name: " + Conf.Arg + "\n" +
-	"scm: bitbucket\n" +
+	return "project_name: " + Conf.Runtime.Arg + "\n" +
+	"vcs: " + Conf.Runtime.Vcs + "\n" +
+	"vcs_provider: " + Conf.Runtime.VcsProvider + "\n" +
+	"\n" +
 	"bitbucket:\n" +
 	"  user: sample_user\n" +
 	"  password: sample_pass\n"

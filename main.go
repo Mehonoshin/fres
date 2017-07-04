@@ -10,9 +10,12 @@ import (
 )
 
 var (
-	verbose    = kingpin.Flag("verbose", "Verbose mode.").Short('v').Bool()
-	configPath = kingpin.Flag("config", "Path to config").Default(".fres.yml").String()
-	lang       = kingpin.Flag("lang", "Service language").Short('l').Default("ruby").String()
+	verbose     = kingpin.Flag("verbose", "Verbose mode.").Short('v').Bool()
+	configPath  = kingpin.Flag("config", "Path to config").Default(".fres.yml").String()
+	lang        = kingpin.Flag("lang", "Service language").Default("ruby").String()
+
+	vcs         = kingpin.Flag("vcs", "Version control system").Default("git").String()
+	vcsProvider = kingpin.Flag("vcs-provider", "Provider of version control system(github, bitbucket)").Default("bitbucket").String()
 
 	cmd				 = kingpin.Arg("cmd", "Command to perform(init, create, remove, deploy)").Required().String()
 	name			 = kingpin.Arg("name", "Name").Default(".").String()
@@ -21,16 +24,34 @@ var (
 func main() {
 	kingpin.Parse()
 
-	// TODO: check if git binary present
-	// TODO: display https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication app passwords text if no pass provided
+	// TODO: check if required packages are installed(git, mercurial)
 
 	loadConfig(*cmd)
+	runCommand()
+}
 
+func loadConfig(command string) {
+	if (command != "init") {
+		config.Load(*configPath)
+	} else {
+		config.Conf = &config.Config{}
+	}
+
+	config.Conf.Runtime = &config.RuntimeConfig{
+		Cmd: *cmd,
+		Arg: *name,
+		Vcs: *vcs,
+		VcsProvider: *vcsProvider,
+	}
+}
+
+func runCommand() {
 	switch *cmd {
 		case "init":
 			utils.Message("Initialize new project '" + *name + "'")
 			initProject(*name)
 		case "create":
+			// TODO: check if config exists before creating new service
 			utils.Message("Create new service '" + *name + "'")
 			create(*name)
 		case "remove":
@@ -43,20 +64,9 @@ func main() {
 	}
 }
 
-func loadConfig(command string) {
-	if (command != "init") {
-		config.Load(*configPath)
-	} else {
-		config.Conf = &config.Config{}
-	}
-
-	utils.Message("cmd")
-	utils.Message(command)
-	config.Conf.Cmd = command
-	config.Conf.Arg = *name
-}
-
 func initProject(initPath string) {
+	// if bitbucket chosen
+	// TODO: display https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication app passwords text if no pass provided
 	structure.CreateProjectDir(initPath)
 
 	_, err := structure.CreateConfig(initPath)
