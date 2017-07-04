@@ -6,6 +6,8 @@ import (
 	"github.com/Mehonoshin/fres/config"
 )
 
+// TODO: detect config file location and project root
+
 func CreateAppDir(newAppName string) {
 	// return error
 	utils.CreateDir(newAppName)
@@ -54,6 +56,3 @@ func CreateBuildScript(newAppName string) {
 	// TODO: add default content
 	utils.CreateFile("build.sh")
 }
-
-//func SampleDockerfile() string {
-//}

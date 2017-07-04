@@ -29,6 +29,10 @@ func languageSpecificContent(lang string) string {
 	}
 }
 
+// TODO: add Elixir support
+// TODO: unescape line breaks
+// TODO: replace variables in templates
+
 func rubyDockerfile() string {
 	return `COPY . /app/ \n
 WORKDIR /app \n

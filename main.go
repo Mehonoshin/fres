@@ -66,6 +66,7 @@ func runCommand() {
 }
 
 func initProject(initPath string) {
+	// TODO: replace initPath with project root
 	// if bitbucket chosen
 	// TODO: display https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication app passwords text if no pass provided
 	structure.CreateProjectDir(initPath)
