@@ -53,6 +53,8 @@ func runCommand() {
 			initProject(*name)
 		case "create":
 			// TODO: check if config exists before creating new service
+			// TODO: Create gemfile for ruby services
+			// TODO: populate build.sh script
 			utils.Message("Create new service '" + *name + "'")
 			create(*name)
 		case "remove":
