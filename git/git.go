@@ -40,15 +40,19 @@ func CommitFile(filename, commitMessage string) {
 func CreateRemote(appName string) {
 	appName = config.Conf.ProjectName + "-" + appName
 
-	err := bitbucket.CreateRemoteRepo(appName, config.Conf.Bitbucket.User, config.Conf.Bitbucket.AppPassword)
+	err := bitbucket.CreateRemoteRepo(appName,
+		config.Conf.Bitbucket.User,
+		config.Conf.Bitbucket.AppPassword,
+		config.Conf.Bitbucket.ProjectMode)
+
 	if err != nil {
-		utils.Error("Can't create '"+ appName + "' remote")
+		utils.Error("Can't create '" + appName + "' remote")
 	}
 }
 
-func AddRemoteAsOrigin(remoteName string) {
-	// TODO: get butbucket username from config
-	//shell.RunCmd("git", "remote", "add", "origin", "ssh://git@bitbucket.org/mexx/" + remoteName + ".git")
+func AddRemoteAsOrigin(appName string) {
+	remoteName := config.Conf.ProjectName + "-" + appName
+	shell.RunCmd("git", "remote", "add", "origin", "ssh://git@bitbucket.org/" + config.Conf.Bitbucket.User + "/" + remoteName + ".git")
 }
 
 func PushMaster() {

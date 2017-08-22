@@ -2,10 +2,11 @@ package utils
 
 import (
 	"net/http"
+	"io"
 	"bytes"
 )
 
-func HttpPostJson(endpoint, username, password, payload string) error {
+func HttpPostJson(endpoint, username, password, payload string) (error, io.ReadCloser) {
 	var jsonStr = []byte(payload)
 	req, err := http.NewRequest("POST", endpoint, bytes.NewBuffer(jsonStr))
 	req.SetBasicAuth(username, password)
@@ -14,9 +15,9 @@ func HttpPostJson(endpoint, username, password, payload string) error {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-			panic(err)
+		panic(err)
 	}
 
 	defer resp.Body.Close()
-	return err
+	return err, resp.Body
 }

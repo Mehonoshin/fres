@@ -19,6 +19,7 @@ type Config struct {
 	Bitbucket   struct {
 		User        string `yaml:"user"`
 		AppPassword string `yaml:"app_password"`
+		ProjectMode bool   `yaml:"project_mode"`
 	}
 
 	Languages []struct {
@@ -58,8 +59,7 @@ func Load(path string) *Config {
 
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		// TODO: replace with utils.Error
-		log.Printf("Can't read config:", err)
+		log.Printf("Lookup config")
 	}
 
 	err = yaml.Unmarshal(data, c)
@@ -73,6 +73,8 @@ func Load(path string) *Config {
 
 	return c
 }
+
+//func lookupProjectRoot()
 
 func SampleConfig() string {
 	return "project_name: " + Conf.Runtime.Arg + "\n" +
